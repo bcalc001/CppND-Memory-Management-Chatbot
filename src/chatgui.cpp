@@ -1,3 +1,5 @@
+ 
+
 #include <wx/filename.h>
 #include <wx/colour.h>
 #include <wx/image.h>
@@ -5,7 +7,7 @@
 #include "chatbot.h"
 #include "chatlogic.h"
 #include "chatgui.h"
-
+#include <memory>
 // size of chatbot window
 const int width = 414;
 const int height = 736;
@@ -49,6 +51,8 @@ ChatBotFrame::ChatBotFrame(const wxString &title) : wxFrame(NULL, wxID_ANY, titl
     // position window in screen center
     this->Centre();
 }
+ChatBotFrame::~ChatBotFrame(){};
+
 
 void ChatBotFrame::OnEnter(wxCommandEvent &WXUNUSED(event))
 {
@@ -118,8 +122,7 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
-
+    _chatLogic = std::make_unique<ChatLogic>();
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
 
@@ -132,13 +135,7 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
 
 ChatBotPanelDialog::~ChatBotPanelDialog()
 {
-    //// STUDENT CODE
-    ////
-
-    delete _chatLogic;
-
-    ////
-    //// EOF STUDENT CODE
+    
 }
 
 void ChatBotPanelDialog::AddDialogItem(wxString text, bool isFromUser)
@@ -214,3 +211,5 @@ ChatBotPanelDialogItem::ChatBotPanelDialogItem(wxPanel *parent, wxString text, b
     // set background color
     this->SetBackgroundColour((isFromUser == true ? wxT("YELLOW") : wxT("BLUE")));
 }
+ChatBotPanelDialogItem::~ChatBotPanelDialogItem(){}
+
