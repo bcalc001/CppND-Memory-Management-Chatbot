@@ -42,10 +42,82 @@ ChatBot::~ChatBot()
     }
 }
 
+
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot &source)  //Copy constructor
+    {
+        std::cout<<"ChatBot Copy Constructor"<<std::endl;
+        //ChatBot _copyBot = new(ChatBot());
+        _image = new wxBitmap;
+        _image = source._image;
+        _currentNode = new GraphNode(source._currentNode->GetID());
+        _currentNode = source._currentNode;
+        _rootNode = new GraphNode(source._rootNode->GetID());
+        _rootNode = source._rootNode;
+        _chatLogic = new ChatLogic();
+        _chatLogic = source._chatLogic;
+    }
 
+ChatBot::ChatBot(ChatBot &&source)  //Move constructor
+{
+        _image = source._image;
+        source._image = nullptr;
+        _currentNode = source._currentNode;
+        source._currentNode = nullptr;
+        _rootNode = source._rootNode;
+        source._rootNode = nullptr;
+        _chatLogic = source._chatLogic;
+        source._chatLogic = nullptr;
+}
+
+ChatBot& ChatBot::operator=( ChatBot &&source)    //Move assignmnet operator
+{
+    if (this == &source){return *this;}
+        delete _image;
+        _image = source._image;
+        source._image = nullptr;
+
+        delete _currentNode;
+        _currentNode = source._currentNode;
+        source._currentNode = nullptr;
+
+        delete _rootNode;
+        _rootNode = source._rootNode;
+        source._rootNode = nullptr;
+
+        delete _chatLogic;
+        _chatLogic = source._chatLogic;
+        source._chatLogic = nullptr;
+
+        return *this;
+}
+
+ChatBot& ChatBot::operator=(const ChatBot &source)  //assignment operator
+    {
+        if (this == &source){return *this;}
+        delete _image;
+        _image = new wxBitmap;
+        *_image = *source._image;
+
+        delete _currentNode;
+        _currentNode = new GraphNode(source._currentNode->GetID());
+        *_currentNode = *source._currentNode;
+
+        delete _rootNode;
+        _rootNode = new GraphNode(source._rootNode->GetID());
+        *_rootNode = *source._rootNode;
+
+        delete _chatLogic;
+        _chatLogic = new ChatLogic();
+        _chatLogic = source._chatLogic;
+
+        return *this;
+
+    }
 ////
+
+
 //// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
